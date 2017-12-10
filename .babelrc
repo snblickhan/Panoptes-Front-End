@@ -3,6 +3,7 @@
   "env": {
     "development": {
       "plugins": [
+        ["transform-object-rest-spread"],
         ["transform-react-jsx"],
         ["typecheck"]
       ]
@@ -16,25 +17,29 @@
             "locals": ["module"]
           }]
         }],
+        ["transform-object-rest-spread"],
         ["transform-react-jsx"]
       ]
     },
     "staging": {
       "plugins": [
+        ["transform-object-rest-spread"],
         ["transform-react-jsx"]
       ]
     },
     "production": {
       "plugins": [
+        ["transform-object-rest-spread"],
         ["transform-react-jsx"]
       ]
     },
     "test": {
       "plugins": [
         ["babel-plugin-rewire"],
+        ["transform-object-rest-spread"],
         ["transform-react-jsx"],
-        ["typecheck"]        
-      ] 
+        ["typecheck"]
+      ]
     }
   }
 }

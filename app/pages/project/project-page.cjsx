@@ -5,6 +5,7 @@ Translate = require 'react-translate-component'
 {sugarClient} = require 'panoptes-client/lib/sugar'
 PotentialFieldGuide = require './potential-field-guide'
 ProjectNavbar = require('./project-navbar').default
+ProjectNavbarFacelift = require('./components/ProjectNavbar').default
 
 AVATAR_SIZE = 100
 
@@ -62,6 +63,11 @@ ProjectPage = React.createClass
       sugarClient.subscribeTo "project-#{project.id}"
 
   render: ->
+    if @props.location.query.facelift
+      NavbarComponent = ProjectNavbarFacelift
+    else
+      NavbarComponent = ProjectNavbar
+
     projectPath = "/projects/#{@props.project.slug}"
     onHomePage = @props.routes[2].path is undefined
 
@@ -75,7 +81,7 @@ ProjectPage = React.createClass
     <div className="project-page project-background" style={backgroundStyle}>
       {if !onHomePage
         <div>
-          <ProjectNavbar {...@props} />
+          <NavbarComponent {...@props} />
           {if !!@props.project.configuration?.announcement
             <div className="informational project-announcement-banner">
               <Markdown>{@props.project.configuration.announcement}</Markdown>
