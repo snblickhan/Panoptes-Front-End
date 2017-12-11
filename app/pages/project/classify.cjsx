@@ -10,6 +10,8 @@ seenThisSession = require '../../lib/seen-this-session'
 `import WorkflowAssignmentDialog from '../../components/workflow-assignment-dialog';`
 experimentsClient = require '../../lib/experiments-client'
 { Split } = require('seven-ten')
+LatestTalkComment = require('./components/LatestTalkComment').default
+
 
 counterpart.registerTranslations 'en',
   classifyPage:
@@ -241,6 +243,11 @@ module.exports = React.createClass
         <code>Please try again. Something went wrong: {@state.rejected.classification.toString()}</code>
       else
         <span>Loading classification</span>}
+
+        <div>
+          <LatestTalkComment {...@props} />
+        </div>
+
     </div>
 
   handleDemoModeChange: (newDemoMode) ->
