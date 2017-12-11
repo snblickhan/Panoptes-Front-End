@@ -114,7 +114,7 @@ ProjectPageController = React.createClass
 
         if project?
           # Use apiClient with cached resources from include to get out of cache
-          awaitBackground = apiClient.type('backgrounds').get(project.links.background.id).catch((error) => [])
+          awaitBackground = apiClient.type('backgrounds').get(project.links.background.id).catch((error) => {})
 
           if project.links?.organization?
             awaitOrganization = project.get('organization', { listed: true })
@@ -262,7 +262,7 @@ ProjectPageController = React.createClass
               @context.router.push "/projects/#{@state.project.slug}/classify"
             @clearInactiveWorkflow(selectedWorkflowID)
               .then(@getSelectedWorkflow(@state.project, @state.preferences))
-      .catch (error) => 
+      .catch (error) =>
         console.warn error.message
 
   clearInactiveWorkflow: (selectedWorkflowID) ->
