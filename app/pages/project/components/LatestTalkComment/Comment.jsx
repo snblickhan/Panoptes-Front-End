@@ -42,11 +42,11 @@ const CommentDate = styled.span`
   margin-right: 10px;
 `;
 
-function Comment({ comment }) {
+function Comment({ comment, ...props }) {
   const date = moment(comment.date).format('D MMM.');
 
   return (
-    <div>
+    <div {...props}>
       <CommentTitle>
         {comment.title}
       </CommentTitle>

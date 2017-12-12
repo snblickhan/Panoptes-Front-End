@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import Loader from 'halogen/PulseLoader';
+import { CSSTransitionGroup } from 'react-transition-group';
 import StyledLink from './StyledLink';
 import Comment from './Comment';
-import { CSSTransitionGroup } from 'react-transition-group'
 
 const Container = styled.section`
   background-color: #fff;
@@ -24,12 +24,12 @@ const Container = styled.section`
 
   & .latest-comment-enter.latest-comment-enter-active {
     opacity: 1;
-    transition: opacity 500000ms ease-in;
+    transition: opacity 500ms ease-in;
   }
 
   & .latest-comment-leave.latest-comment-leave-active {
     opacity: 0.01;
-    transition: opacity 300000ms ease-in;
+    transition: opacity 300ms ease-in;
   }
 `;
 
@@ -57,7 +57,7 @@ const CommentLoader = styled(Loader).attrs({
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 `;
 
 const CommentBodyWrapper = styled.div`
@@ -91,11 +91,11 @@ function LatestTalkComment({ comment }) {
         </Title>
         {CommentLink}
       </Header>
-      <CommentBodyWrapper key="comment-body-wrapper">
+      <CommentBodyWrapper>
         <CSSTransitionGroup
           transitionName="latest-comment"
-          transitionEnterTimeout={500000}
-          transitionLeaveTimeout={300000}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
         >
           {CommentBody}
         </CSSTransitionGroup>
