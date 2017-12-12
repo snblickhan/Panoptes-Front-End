@@ -87,7 +87,8 @@ Comment.propTypes = {
     body: PropTypes.string,
     date: PropTypes.string,
     title: PropTypes.string,
-    user: PropTypes.string
+    user: PropTypes.string,
+    userLink: PropTypes.string
   })
 };
 
@@ -98,7 +99,8 @@ Comment.defaultProps = {
     body: '',
     date: '',
     title: '',
-    user: ''
+    user: '',
+    userLink: ''
   }
 };
 
