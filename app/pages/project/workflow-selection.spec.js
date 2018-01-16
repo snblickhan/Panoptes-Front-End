@@ -219,4 +219,27 @@ describe('WorkflowSelection', () => {
       sinon.assert.calledWith(workflowSpy, '1', true);
     });
   });
+
+  describe('on project props change', () => {
+    const newProject = {
+      configuration: {
+        default_workflow: '1'
+      },
+      id: 'b',
+      display_name: 'A new project',
+      links: {
+        active_workflows: ['1', '2']
+      }
+    };
+
+    beforeEach(() => {
+      wrapper.setProps({ project: newProject });
+    });
+
+    it('should load the project default workflow', () => {
+      controller.getSelectedWorkflow({ newProject, preferences, owner });
+      sinon.assert.calledOnce(workflowSpy);
+      sinon.assert.calledWith(workflowSpy, '1', true);
+    });
+  });
 });
