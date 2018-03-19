@@ -69,15 +69,15 @@ class TaskBackButton extends React.Component {
       return (
         <ThemeProvider theme={{ mode: 'light' }}>
           <StyledTaskBackButtonWrapper>
-              <StyledTaskBackButton
-                onClick={this.props.destroyCurrentAnnotation}
-                onMouseEnter={this.toggleWarning}
-                onFocus={this.toggleWarning}
-                onMouseLeave={this.toggleWarning}
-                onBlur={this.toggleWarning}
-              >
-                <Translate content="classifier.back" />
-              </StyledTaskBackButton>
+            <StyledTaskBackButton
+              onClick={this.props.destroyCurrentAnnotation}
+              onMouseEnter={this.toggleWarning}
+              onFocus={this.toggleWarning}
+              onMouseLeave={this.toggleWarning}
+              onBlur={this.toggleWarning}
+            >
+              <Translate content="classifier.back" />
+            </StyledTaskBackButton>
 
             {this.state.showWarning &&
               <StyledTaskBackButtonToolTip>

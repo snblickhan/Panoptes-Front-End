@@ -148,7 +148,7 @@ class TaskNav extends React.Component {
               onClick={this.addAnnotationForTask.bind(this, nextTaskKey)}
             >
               <Translate content="classifier.next" />
-              <i className="fa fa-long-arrow-right" />              
+              <i className="fa fa-long-arrow-right" />
             </button> : !completed ?
               <button
                 type="button"

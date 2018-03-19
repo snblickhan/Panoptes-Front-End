@@ -19,7 +19,6 @@ import CacheClassification from '../components/cache-classification';
 import Task from './task';
 import RestartButton from './restart-button';
 import MiniCourse from './mini-course';
-import Tutorial from './tutorial';
 import TaskNav from './task-nav';
 import ExpertOptions from './expert-options';
 import * as feedbackActions from '../redux/ducks/feedback';
@@ -340,7 +339,12 @@ class Classifier extends React.Component {
           modellingEnabled={modellingEnabled}
         />
         <div className="task-area">
-          <TaskTabs />
+          <TaskTabs
+            projectPreferences={this.props.preferences}
+            tutorial={this.props.tutorial}
+            user={this.props.user}
+            workflow={this.props.workflow}
+          />
           {!currentClassification.completed ?
             <Task
               preferences={this.props.preferences}
@@ -391,24 +395,6 @@ class Classifier extends React.Component {
                 onChangeDemoMode={this.props.onChangeDemoMode}
               />}
           </TaskNav>
-          {this.props.tutorial &&
-            <p>
-              <small>
-                <strong>
-                  <RestartButton
-                    className="minor-button"
-                    preferences={this.props.preferences}
-                    shouldRender={(this.props.tutorial) && (this.props.tutorial.steps.length > 0)}
-                    start={Tutorial.start.bind(Tutorial, this.props.tutorial, this.props.user, this.props.preferences, this.context.geordi, this.context.store)}
-                    style={{ marginTop: '2em' }}
-                    user={this.props.user}
-                    workflow={this.props.workflow}
-                  >
-                    <Translate content="classifier.tutorialButton" />
-                  </RestartButton>
-                </strong>
-              </small>
-            </p>}
 
           {this.props.minicourse &&
             <p>
