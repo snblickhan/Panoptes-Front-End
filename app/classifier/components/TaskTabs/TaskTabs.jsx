@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Translate from 'react-translate-component';
 import { pxToRem } from '../../../theme';
-
-// TODO: add a TutorialTab
-// TODO: add onClick functionality
+import TutorialTab from './components/TutorialTab';
 
 const TabsWrapper = styled.div`
   display: flex;
@@ -27,10 +25,25 @@ const QuestionTab = styled.button.attrs({
   text-transform: uppercase;
 `;
 
-export default function TaskTabs(props) {
+export default function TaskTabs({ projectPreferences, tutorial, user, workflow}) {
   return (
     <TabsWrapper>
       <QuestionTab><Translate content="classifier.question" /></QuestionTab>
+      <TutorialTab
+        projectPreferences={projectPreferences}
+        tutorial={tutorial}
+        user={user}
+        workflow={workflow}
+      />
     </TabsWrapper>
   );
 }
+
+
+TaskTabs.propTypes = {
+  projectPreferences: PropTypes.object,
+  tutorial: PropTypes.object,
+  user: PropTypes.object,
+  workflow: PropTypes.object
+};
+

@@ -19,7 +19,6 @@ import CacheClassification from '../components/cache-classification';
 import Task from './task';
 import RestartButton from './restart-button';
 import MiniCourse from './mini-course';
-import Tutorial from './tutorial';
 import TaskNav from './task-nav';
 import ExpertOptions from './expert-options';
 import * as feedbackActions from '../redux/ducks/feedback';
@@ -373,6 +372,7 @@ class Classifier extends React.Component {
                   onChangeDemoMode={this.props.onChangeDemoMode}
                 />}
             </TaskNav>
+
             {this.props.tutorial &&
               <p>
                 <small>
