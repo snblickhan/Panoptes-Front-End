@@ -5,12 +5,12 @@ import Translate from 'react-translate-component';
 import { pxToRem } from '../../../theme';
 import TutorialTab from './components/TutorialTab';
 
-const TabsWrapper = styled.div`
+export const TabsWrapper = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
-const QuestionTab = styled.button.attrs({
+export const QuestionTab = styled.button.attrs({
   type: 'button'
 })`
   background-color: white;
@@ -25,7 +25,8 @@ const QuestionTab = styled.button.attrs({
   text-transform: uppercase;
 `;
 
-export default function TaskTabs({ projectPreferences, tutorial, user, workflow}) {
+// TODO: make QuestionTab and TutorialTab actual functional tabs according to design
+export default function TaskTabs({ projectPreferences, tutorial, user, workflow }) {
   return (
     <TabsWrapper>
       <QuestionTab><Translate content="classifier.question" /></QuestionTab>
