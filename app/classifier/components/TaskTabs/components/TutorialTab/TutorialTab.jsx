@@ -8,7 +8,7 @@ import RestartButton from '../../../../restart-button';
 import Tutorial from '../../../../tutorial';
 import { pxToRem, zooTheme } from '../../../../../theme';
 
-const StyledRestartButton = styled(RestartButton)`
+export const StyledRestartButton = styled(RestartButton)`
   background-color: ${theme('mode', {
     light: zooTheme.colors.background
   })};
