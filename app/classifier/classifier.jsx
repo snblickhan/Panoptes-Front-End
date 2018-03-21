@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import apiClient from 'panoptes-client/lib/api-client';
-import { VisibilitySplit } from 'seven-ten';
 import Translate from 'react-translate-component';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -17,8 +16,6 @@ import workflowAllowsSeparateFrames from '../lib/workflow-allows-separate-frames
 import FrameAnnotator from './frame-annotator';
 import CacheClassification from '../components/cache-classification';
 import Task from './task';
-import RestartButton from './restart-button';
-import MiniCourse from './mini-course';
 import TaskNav from './task-nav';
 import ExpertOptions from './expert-options';
 import * as feedbackActions from '../redux/ducks/feedback';
@@ -26,6 +23,7 @@ import openFeedbackModal from '../features/feedback/classifier';
 import ModelRenderer from '../components/model-renderer';
 import { ModelScore } from '../components/modelling';
 import TaskTabs from './components/TaskTabs';
+import MinicourseButton from './components/MinicourseButton';
 
 // For easy debugging
 window.cachedClassification = CacheClassification;
@@ -396,26 +394,13 @@ class Classifier extends React.Component {
               />}
           </TaskNav>
 
-          {this.props.minicourse &&
-            <p>
-              <small>
-                <strong>
-                  <VisibilitySplit splits={this.props.splits} splitKey={'mini-course.visible'} elementKey={'button'}>
-                    <RestartButton
-                      className="minor-button"
-                      preferences={this.props.preferences}
-                      shouldRender={(this.props.minicourse) && (this.props.user) && (this.props.minicourse.steps.length > 0)}
-                      start={MiniCourse.restart.bind(MiniCourse, this.props.minicourse, this.props.preferences, this.props.user, this.context.geordi, this.context.store)}
-                      style={{ marginTop: '2em' }}
-                      user={this.props.user}
-                      workflow={this.props.workflow}
-                    >
-                      <Translate content="classifier.miniCourseButton" />
-                    </RestartButton>
-                  </VisibilitySplit>
-                </strong>
-              </small>
-            </p>}
+          <MinicourseButton
+            minicourse={this.props.minicourse}
+            projectPreferences={this.props.preferences}
+            splits={this.props.splits}
+            workflow={this.props.workflow}
+            user={this.props.user}
+          />
 
           {!!this.props.demoMode &&
             <p style={{ textAlign: 'center' }}>
