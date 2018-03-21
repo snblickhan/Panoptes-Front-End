@@ -96,11 +96,7 @@ class TaskNav extends React.Component {
     const TaskComponent = tasks[task.type];
 
     // Should we disable the "Back" button?
-<<<<<<< 56bbe77faf1b6239d774cf9ff4c0107d291d2280
-    const onFirstAnnotation = !completed && (this.props.annotations.indexOf(this.props.annotation) === 0);
-=======
     // const onFirstAnnotation = !completed && (this.props.classification.annotations.indexOf(this.props.annotation) === 0);
->>>>>>> Begin back button refactor
 
     // Should we disable the "Next" or "Done" buttons?
     let waitingForAnswer = this.props.disabled;
@@ -132,9 +128,9 @@ class TaskNav extends React.Component {
       <div>
         <nav className="task-nav">
           <TaskBackButton
-            areAnnotationsNotPersisted={!this.props.workflow.configuration.persist_annotations}
+            areAnnotationsPersisted={this.props.workflow.configuration.persist_annotations}
             destroyCurrentAnnotation={this.destroyCurrentAnnotation}
-            showButton={visibleTasks.length > 1 && !completed && (this.props.classification.annotations.indexOf(this.props.annotation) !== 0)}
+            showButton={visibleTasks.length > 1 && !completed && (this.props.classification.annotations.indexOf(this.props.annotation) === 0)}
           />
           {(!nextTaskKey && this.props.workflow.configuration.hide_classification_summaries && this.props.project && !disableTalk && !completed) &&
             <Link
@@ -153,7 +149,7 @@ class TaskNav extends React.Component {
               onClick={this.addAnnotationForTask.bind(this, nextTaskKey)}
             >
               <Translate content="classifier.next" />
-              <i className="fa fa-long-arrow-right" />
+              <i className="fa fa-long-arrow-right" />              
             </button> : !completed ?
               <button
                 type="button"
