@@ -1,28 +1,34 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { browserHistory } from 'react-router';
 import apiClient from 'panoptes-client/lib/api-client';
+import findLastIndex from 'lodash/findLastIndex';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import findLastIndex from 'lodash/findLastIndex';
-import { browserHistory } from 'react-router';
+import styled, { ThemeProvider } from 'styled-components';
 
 import { getSessionID } from '../lib/session';
-import SubjectViewer from '../components/subject-viewer';
-import ClassificationSummary from './classification-summary';
 import preloadSubject from '../lib/preload-subject';
 import workflowAllowsFlipbook from '../lib/workflow-allows-flipbook';
 import workflowAllowsSeparateFrames from '../lib/workflow-allows-separate-frames';
-import FrameAnnotator from './frame-annotator';
-import CacheClassification from '../components/cache-classification';
-import Task from './task';
-import TaskNav from './task-nav';
-import ExpertOptions from './expert-options';
 import * as feedbackActions from '../redux/ducks/feedback';
-import openFeedbackModal from '../features/feedback/classifier';
-import ModelRenderer from '../components/model-renderer';
-import { ModelScore } from '../components/modelling';
+import * as userInterfaceActions from '../redux/ducks/userInterface';
+import CacheClassification from '../components/cache-classification';
+
+import Task from './task';
 import TaskTabs from './components/TaskTabs';
+import TaskArea from './components/TaskArea';
+import TaskNav from './task-nav';
+import ClassificationSummary from './classification-summary';
 import MinicourseButton from './components/MinicourseButton';
+
+import SubjectViewer from '../components/subject-viewer';
+import FrameAnnotator from './frame-annotator';
+import ModelRenderer from '../components/model-renderer';
+import ExpertOptions from './expert-options';
+
+import openFeedbackModal from '../features/feedback/classifier';
+import { ModelScore } from '../components/modelling';
 
 // For easy debugging
 window.cachedClassification = CacheClassification;
@@ -335,99 +341,101 @@ class Classifier extends React.Component {
           subject={this.props.subject}
           modellingEnabled={modellingEnabled}
         />
-        <div className="task-area">
-          <TaskTabs
-            projectPreferences={this.props.preferences}
-            tutorial={this.props.tutorial}
-            user={this.props.user}
-            workflow={this.props.workflow}
-          />
-          {!currentClassification.completed ?
-            <Task
-              preferences={this.props.preferences}
+        <ThemeProvider theme={{ mode: this.props.theme }}>
+          <TaskArea>
+            <TaskTabs
+              projectPreferences={this.props.preferences}
+              tutorial={this.props.tutorial}
               user={this.props.user}
-              project={this.props.project}
               workflow={this.props.workflow}
-              classification={currentClassification}
-              task={currentTask}
-              annotation={currentAnnotation}
-              subjectLoading={this.state.subjectLoading}
-              updateAnnotations={this.updateAnnotations}
-            /> :
-            <ClassificationSummary
-              project={this.props.project}
-              workflow={this.props.workflow}
-              subject={this.props.subject}
-              classification={currentClassification}
-              expertClassification={this.state.expertClassification}
-              splits={this.props.splits}
-              classificationCount={this.props.classificationCount}
-              hasGSGoldStandard={this.subjectIsGravitySpyGoldStandard()}
-              toggleExpertClassification={this.toggleExpertClassification}
             />
-          }
-          <ModelScore
-            score={this.state.modelScore}
-            modellingEnabled={modellingEnabled}
-          />
-          <TaskNav
-            annotation={currentAnnotation}
-            classification={currentClassification}
-            completeClassification={this.completeClassification}
-            disabled={this.state.subjectLoading}
-            nextSubject={this.props.onClickNext}
-            project={this.props.project}
-            subject={this.props.subject}
-            task={currentTask}
-            workflow={this.props.workflow}
-            updateAnnotations={this.updateAnnotations}
-            onNextTask={this.onNextTask}
-            onPrevTask={this.onPrevTask}
-          >
-            {!!this.props.expertClassifier &&
-              <ExpertOptions
+            {!currentClassification.completed ?
+              <Task
+                preferences={this.props.preferences}
+                user={this.props.user}
+                project={this.props.project}
+                workflow={this.props.workflow}
                 classification={currentClassification}
-                userRoles={this.props.userRoles}
-                demoMode={this.props.demoMode}
-                onChangeDemoMode={this.props.onChangeDemoMode}
-              />}
-          </TaskNav>
+                task={currentTask}
+                annotation={currentAnnotation}
+                subjectLoading={this.state.subjectLoading}
+                updateAnnotations={this.updateAnnotations}
+              /> :
+              <ClassificationSummary
+                project={this.props.project}
+                workflow={this.props.workflow}
+                subject={this.props.subject}
+                classification={currentClassification}
+                expertClassification={this.state.expertClassification}
+                splits={this.props.splits}
+                classificationCount={this.props.classificationCount}
+                hasGSGoldStandard={this.subjectIsGravitySpyGoldStandard()}
+                toggleExpertClassification={this.toggleExpertClassification}
+              />
+            }
+            <ModelScore
+              score={this.state.modelScore}
+              modellingEnabled={modellingEnabled}
+            />
+            <TaskNav
+              annotation={currentAnnotation}
+              classification={currentClassification}
+              completeClassification={this.completeClassification}
+              disabled={this.state.subjectLoading}
+              nextSubject={this.props.onClickNext}
+              project={this.props.project}
+              subject={this.props.subject}
+              task={currentTask}
+              workflow={this.props.workflow}
+              updateAnnotations={this.updateAnnotations}
+              onNextTask={this.onNextTask}
+              onPrevTask={this.onPrevTask}
+            >
+              {!!this.props.expertClassifier &&
+                <ExpertOptions
+                  classification={currentClassification}
+                  userRoles={this.props.userRoles}
+                  demoMode={this.props.demoMode}
+                  onChangeDemoMode={this.props.onChangeDemoMode}
+                />}
+            </TaskNav>
 
-          <MinicourseButton
-            minicourse={this.props.minicourse}
-            projectPreferences={this.props.preferences}
-            splits={this.props.splits}
-            workflow={this.props.workflow}
-            user={this.props.user}
-          />
+            <MinicourseButton
+              minicourse={this.props.minicourse}
+              projectPreferences={this.props.preferences}
+              splits={this.props.splits}
+              workflow={this.props.workflow}
+              user={this.props.user}
+            />
 
-          {!!this.props.demoMode &&
-            <p style={{ textAlign: 'center' }}>
-              <i className="fa fa-trash" />{' '}
-              <small>
-                <strong>Demo mode:</strong>
-                <br />
-                No classifications are being recorded.{' '}
-                <button type="button" className="secret-button" onClick={this.changeDemoMode.bind(this, false)}>
-                  <u>Disable</u>
-                </button>
-              </small>
-            </p>
-          }
-          {!!currentClassification.gold_standard &&
-            <p style={{ textAlign: 'center' }}>
-              <i className="fa fa-star" />{' '}
-              <small>
-                <strong>Gold standard mode:</strong>
-                <br />
-                Please ensure this classification is completely accurate.{' '}
-                <button type="button" className="secret-button" onClick={currentClassification.update.bind(currentClassification, { gold_standard: undefined })}>
-                  <u>Disable</u>
-                </button>
-              </small>
-            </p>
-          }
-        </div>
+            {!!this.props.demoMode &&
+              <p style={{ textAlign: 'center' }}>
+                <i className="fa fa-trash" />{' '}
+                <small>
+                  <strong>Demo mode:</strong>
+                  <br />
+                  No classifications are being recorded.{' '}
+                  <button type="button" className="secret-button" onClick={this.changeDemoMode.bind(this, false)}>
+                    <u>Disable</u>
+                  </button>
+                </small>
+              </p>
+            }
+            {!!currentClassification.gold_standard &&
+              <p style={{ textAlign: 'center' }}>
+                <i className="fa fa-star" />{' '}
+                <small>
+                  <strong>Gold standard mode:</strong>
+                  <br />
+                  Please ensure this classification is completely accurate.{' '}
+                  <button type="button" className="secret-button" onClick={currentClassification.update.bind(currentClassification, { gold_standard: undefined })}>
+                    <u>Disable</u>
+                  </button>
+                </small>
+              </p>
+            }
+          </TaskArea>
+        </ThemeProvider>
       </div>
     );
   }
@@ -486,6 +494,7 @@ Classifier.propTypes = {
     id: PropTypes.string,
     metadata: PropTypes.object
   }),
+  theme: PropTypes.string,
   tutorial: PropTypes.shape({
     id: PropTypes.string,
     steps: PropTypes.array
@@ -518,12 +527,14 @@ Classifier.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  feedback: state.feedback
+  feedback: state.feedback,
+  theme: state.userInterface.theme
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    feedback: bindActionCreators(feedbackActions, dispatch)
+    feedback: bindActionCreators(feedbackActions, dispatch),
+    theme: bindActionCreators(userInterfaceActions, dispatch)
   }
 });
 
